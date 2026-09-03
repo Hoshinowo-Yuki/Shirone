@@ -1,0 +1,150 @@
+/* Chat Container */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 1.5rem 0;
+  padding: 1rem;
+}
+
+.chat-container.chat-empty {
+  color: var(--text-muted, #888);
+  font-style: italic;
+}
+
+/* Chat Message */
+.chat-message {
+  display: flex;
+  max-width: 85%;
+}
+
+.chat-message.chat-left {
+  align-self: flex-start;
+}
+
+.chat-message.chat-right {
+  align-self: flex-end;
+}
+
+/* Chat Bubble */
+.chat-bubble {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Chat Header */
+.chat-header {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 4px;
+  padding: 0 4px;
+}
+
+.chat-right .chat-header {
+  flex-direction: row-reverse;
+}
+
+.chat-username {
+  font-size: 14px;
+  color: var(--chat-username-color, #333);
+}
+
+.chat-timestamp {
+  font-size: 11px;
+  color: var(--chat-timestamp-color, #999);
+}
+
+/* Chat Content */
+.chat-content {
+  padding: 10px 14px;
+  word-break: break-word;
+  line-height: 1.6;
+}
+
+.chat-left .chat-content {
+  background: var(--chat-left-bg, rgba(0, 0, 0, 0.06));
+  border-radius: 4px 16px 16px 16px;
+}
+
+.chat-right .chat-content {
+  background: var(--primary);
+  border-radius: 16px 4px 16px 16px;
+  color: white;
+}
+
+.chat-content p {
+  margin: 0;
+}
+
+.chat-content p:not(:last-child) {
+  margin-bottom: 0.5em;
+}
+
+/* Blockquote / Reply - Left side */
+.chat-left .chat-content blockquote {
+  margin: 0 0 8px 0;
+  padding: 8px 12px;
+  border-radius: 4px 12px 12px 12px;
+  font-size: 0.875em;
+  border: none;
+  background: rgba(0, 0, 0, 0.06);
+  color: #666;
+}
+
+/* Blockquote / Reply - Right side */
+.chat-right .chat-content blockquote {
+  margin: 0 0 8px 0;
+  padding: 8px 12px;
+  border-radius: 12px 4px 12px 12px;
+  font-size: 0.875em;
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Hide blockquote pseudo-element in chat */
+.chat-content blockquote:before {
+  display: none !important;
+}
+
+/* Reply indicator with icon */
+.chat-reply-to {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.7em;
+  margin-bottom: 4px;
+  opacity: 0.7;
+}
+
+.chat-reply-to .iconify {
+  font-size: 0.9em;
+}
+
+.chat-left .chat-reply-to {
+  color: #666;
+}
+
+.chat-right .chat-reply-to {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Dark Mode */
+:root.dark .chat-username {
+  color: var(--chat-username-color-dark, #eee);
+}
+
+:root.dark .chat-timestamp {
+  color: var(--chat-timestamp-color-dark, #888);
+}
+
+:root.dark .chat-left .chat-content {
+  background: var(--chat-left-bg-dark, rgba(255, 255, 255, 0.08));
+}
+
+:root.dark .chat-left .chat-content blockquote {
+  background: rgba(255, 255, 255, 0.06);
+  color: #aaa;
+}
