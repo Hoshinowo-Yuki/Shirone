@@ -1,6 +1,9 @@
 services:
   shirone:
-    build: .
+    build:
+      context: .
+      ssh:
+        - default=~/.ssh/blog-content-renew
     container_name: shirone-blog
     ports:
       - "8080:80"
