@@ -5,7 +5,9 @@ export function remarkHighlight() {
     visit(tree, 'text', (node, index, parent) => {
       if (!parent || index === null) return;
 
-      const highlightRegex = /==([^=]+)==/g;
+      // Don't consume ==...== that carries a {.class} attribute —
+      // the markers plugin validates and owns those forms.
+      const highlightRegex = /==([^=]+)==(?!\{)/g;
       const text = node.value;
 
       if (!highlightRegex.test(text)) return;

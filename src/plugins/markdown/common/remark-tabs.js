@@ -9,6 +9,13 @@ export function remarkTabs() {
     visit(tree, 'containerDirective', (node, index, parent) => {
       if (node.name !== 'tabs') return;
 
+      // Only claim :::tabs blocks that actually use ::tab directives.
+      // The option-groups plugin owns :::tabs blocks written with @tab markers.
+      const hasTabDirectives = node.children?.some(
+        (child) => child.type === 'leafDirective' && child.name === 'tab',
+      );
+      if (!hasTabDirectives) return;
+
       const tabGroupId = `tab-group-${tabGroupCounter++}`;
       const tabs = [];
       const tabContents = [];
