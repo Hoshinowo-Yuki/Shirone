@@ -1,0 +1,32 @@
+name: Deploy to Production Server
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+  repository_dispatch:
+    types: [ content-updated ]  # Must match event-type from trigger
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
+    defaults:
+      run:
+        working-directory: /prod-storage/srv/blog-rewrite/Shirone
+    steps:
+      - name: SSH Pre-Test
+        run: |
+          whoami
+          ssh -T git@github.com:Hoshinowo-Yuki/moe-mizuki.git || true
+
+      - name: Pull latest changes
+        run: |
+          git fetch origin master
+          git reset --hard origin/master
+          git submodule update --init --recursive
+
+      - name: Build site
+        id: build
+        run: |
+            docker compose down
+            docker compose up -d --build
