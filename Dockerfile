@@ -6,8 +6,8 @@ WORKDIR /app
 # Enable corepack to use pnpm
 RUN corepack enable
 
-# Install git for cloning git repositories
-RUN apk add --no-cache git
+# Install git and openssh-client for cloning private git repositories
+RUN apk add --no-cache git openssh-client
 
 # Copy package.json, pnpm-lock.yaml, and .npmrc to install dependencies first
 COPY package.json pnpm-lock.yaml .npmrc ./
