@@ -6,6 +6,9 @@ WORKDIR /app
 # Enable corepack to use pnpm
 RUN corepack enable
 
+# Install git for cloning git repositories
+RUN apk add --no-cache git
+
 # Copy package.json, pnpm-lock.yaml, and .npmrc to install dependencies first
 COPY package.json pnpm-lock.yaml .npmrc ./
 RUN pnpm install --frozen-lockfile
