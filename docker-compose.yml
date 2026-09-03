@@ -6,5 +6,5 @@ services:
         - default=~/.ssh/blog-content-renew
     container_name: shirone-blog
     ports:
-      - "8080:80"
+      - "4325:80"
     restart: unless-stopped
