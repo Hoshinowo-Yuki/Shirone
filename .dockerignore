@@ -1,0 +1,10 @@
+.git
+node_modules
+dist
+.astro
+.vscode
+.github
+docs
+tests
+scripts
+public/assets/moments/thumbnails

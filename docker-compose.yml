@@ -1,0 +1,7 @@
+services:
+  shirone:
+    build: .
+    container_name: shirone-blog
+    ports:
+      - "8080:80"
+    restart: unless-stopped
