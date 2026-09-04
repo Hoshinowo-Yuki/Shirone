@@ -27,6 +27,8 @@ export type SiteConfig = {
 	base?: string;
 	title: string;
 	subtitle: string;
+	/** 默认社交媒体分享预览图（og:image / twitter:image），支持本地相对路径或远程绝对链接。未配置时自动回退为第一张桌面版横幅壁纸。 */
+	ogImage?: string;
 	topAppBar: {
 		/** 桌面端标题与导航内容组的对齐方式。 */
 		contentAlign: TopAppBarContentAlign;

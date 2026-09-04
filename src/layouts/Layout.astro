@@ -3,6 +3,8 @@ import { Font } from "astro:assets";
 import Snackbar from "@components/atoms/overlay/Snackbar.svelte";
 import ConfigCarrier from "@components/system/ConfigCarrier.astro";
 import UmamiRuntime from "@components/system/UmamiRuntime.astro";
+import { resolveAsset } from "@utils/asset-utils";
+import { pathsEqual, toAbsoluteUrl, url } from "@utils/url-utils";
 import {
 	expressiveCodeConfig,
 	profileConfig,
@@ -26,9 +28,7 @@ import {
 import { defaultFavicons } from "../constants/icon";
 import type { Favicon } from "../types/config";
 import { createFontRoleStyle } from "../utils/font-options";
-import { resolveAsset } from "../utils/asset-utils";
 import { resolvePageWidth } from "../utils/responsive-utils";
-import { pathsEqual, url } from "../utils/url-utils";
 import "../styles/main.css";
 import "../styles/font-faces.css";
 import textureStyles from "../styles/textures.css?raw";
@@ -43,7 +43,8 @@ interface Props {
 	page?: SidebarPage;
 }
 
-let { title, ogImage, description, lang, setOGTypeArticle, page } = Astro.props;
+let { title, banner, ogImage, description, lang, setOGTypeArticle, page } =
+	Astro.props;
 
 const initialPage =
 	page ?? (pathsEqual(Astro.url.pathname, url("/")) ? "home" : undefined);
@@ -55,17 +56,14 @@ const initialPage =
 const canonicalUrl = Astro.site
 	? new URL(Astro.url.pathname + Astro.url.search, Astro.site)
 	: Astro.url;
-const resolvedOgImage = await resolveAsset(
-	ogImage || siteConfig.banner.src.desktop[0] || "",
-);
-const absoluteOgImage = resolvedOgImage
-	? new URL(
-		resolvedOgImage.startsWith("/")
-			? url(resolvedOgImage)
-			: resolvedOgImage,
-		canonicalUrl,
-	).href
-	: "";
+const defaultSocialImage =
+	siteConfig.ogImage ||
+	siteConfig.banner.src.desktop[0] ||
+	siteConfig.banner.src.mobile[0] ||
+	"";
+const candidateOgImage = ogImage || banner || defaultSocialImage;
+const resolvedOgImage = await resolveAsset(candidateOgImage);
+const absoluteOgImage = toAbsoluteUrl(resolvedOgImage, canonicalUrl);
 
 const configHue = siteConfig.themeColor.hue;
 const lightTheme =
@@ -127,7 +125,7 @@ const hasMonoFont =
 			<meta property="og:type" content="website" />
 		)}
 
-		<meta name="twitter:card" content="summary_large_image">
+		<meta name="twitter:card" content={absoluteOgImage ? "summary_large_image" : "summary"}>
 		<meta property="twitter:url" content={canonicalUrl}>
 		<meta name="twitter:title" content={pageTitle}>
 		<meta name="twitter:description" content={description || pageTitle}>
