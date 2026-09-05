@@ -1,6 +1,7 @@
 enum I18nKey {
 	home = "home",
 	about = "about",
+	privacyPolicies = "privacyPolicies",
 	archive = "archive",
 	/** 归档分组切换（Tabs）：tablist 无障碍名称 */
 	archiveGroup = "archiveGroup",

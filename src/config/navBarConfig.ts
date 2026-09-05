@@ -106,6 +106,12 @@ export const LinkPresets: Record<string, NavBarLink> = {
 		icon: "material-symbols:info-outline-rounded",
 		pageKey: "about",
 	},
+	PrivacyPolicies: {
+		name: i18n(I18nKey.privacyPolicies),
+		url: "/privacy-policies/",
+		icon: "material-symbols:policy-outline-rounded",
+		pageKey: "privacyPolicies",
+	},
 	GitHub: {
 		name: "GitHub",
 		url: "https://github.com/LyraVoid/Shirone",
@@ -137,6 +143,7 @@ const defaultNavBarConfig: NavBarConfig = {
 				// LinkPresets.Categories,
 				// LinkPresets.Tags,
 				LinkPresets.About,
+				LinkPresets.PrivacyPolicies,
 				LinkPresets.GitHub,
 			],
 		},

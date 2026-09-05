@@ -35,5 +35,6 @@ export function resolvePageKey(
 	if (pathname === "/albums" || pathname.startsWith("/albums/"))
 		return "albums";
 	if (pathname === "/about") return "about";
+	if (pathname === "/privacy-policies") return "privacyPolicies";
 	return "";
 }

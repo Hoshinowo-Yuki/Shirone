@@ -4,6 +4,7 @@ import type { Translation } from "../translation.ts";
 export const th: Translation = {
 	[Key.home]: "หน้าแรก",
 	[Key.about]: "เกี่ยวกับ",
+	[Key.privacyPolicies]: "นโยบายความเป็นส่วนตัว",
 	[Key.archive]: "คลัง",
 	[Key.archiveGroup]: "จัดกลุ่มคลัง",
 	[Key.archiveGroupYear]: "ตามปี",
