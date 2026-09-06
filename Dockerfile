@@ -21,6 +21,10 @@ RUN --mount=type=ssh pnpm install --frozen-lockfile
 
 # Then copy the rest of the application code and build the project
 COPY . .
+
+# Sync private content before building the static site.
+ARG CONTENT_VERSION=latest
+RUN --mount=type=ssh echo "Content version: ${CONTENT_VERSION}" && pnpm content:sync
 RUN --mount=type=ssh pnpm build
 
 # ---------- Runtime Stage ----------

@@ -2,6 +2,8 @@ services:
   shirone:
     build:
       context: .
+      args:
+        CONTENT_VERSION: ${CONTENT_VERSION:-latest}
       ssh:
         - default=~/.ssh/blog-content-renew
     container_name: shirone-blog

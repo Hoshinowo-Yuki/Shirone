@@ -10,6 +10,8 @@ on:
 jobs:
   build-and-deploy:
     runs-on: self-hosted
+    env:
+      CONTENT_VERSION: ${{ github.event_name == 'repository_dispatch' && github.event.client_payload.sha || github.sha }}
     defaults:
       run:
         working-directory: /prod-storage/srv/blog/Shirone
