@@ -24,8 +24,9 @@ COPY . .
 
 # Sync private content before building the static site.
 ARG CONTENT_VERSION=latest
-RUN --mount=type=ssh echo "Content version: ${CONTENT_VERSION}" && pnpm content:sync
-RUN --mount=type=ssh pnpm build
+RUN --mount=type=ssh \
+    echo "Content version: ${CONTENT_VERSION}" && \
+    pnpm build
 
 # ---------- Runtime Stage ----------
 FROM nginx:alpine

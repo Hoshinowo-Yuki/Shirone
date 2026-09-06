@@ -27,8 +27,24 @@ jobs:
           git reset --hard origin/main
           git submodule update --init --recursive
 
-      - name: Build site
+      - name: Build and start site
         id: build
         run: |
-            docker compose down
-            docker compose up -d --build
+          set -Eeuo pipefail
+          docker compose build
+          docker compose up -d --no-build
+
+      - name: Notify success
+        if: success()
+        run: |
+          echo "::notice title=Deployment succeeded::The site was rebuilt and started successfully."
+          echo "Deployment succeeded." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Notify failure
+        if: failure()
+        run: |
+          echo "::error title=Deployment failed::The site build or startup failed."
+          docker compose ps || true
+          docker compose logs --tail=100 || true
+          echo "Deployment failed. Check the logs above." >> "$GITHUB_STEP_SUMMARY"
+          exit 1
