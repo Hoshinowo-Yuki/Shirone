@@ -3,6 +3,7 @@ name: Deploy to Production Server
 on:
   push:
     branches: [ main ]
+
   workflow_dispatch:
   repository_dispatch:
     types: [ content-updated ]  # Must match event-type from trigger
@@ -12,35 +13,31 @@ jobs:
     runs-on: self-hosted
     env:
       CONTENT_VERSION: ${{ github.event_name == 'repository_dispatch' && github.event.client_payload.sha || github.sha }}
+
     defaults:
       run:
         working-directory: /prod-storage/srv/blog/Shirone
+
     steps:
       - name: SSH Pre-Test
         run: |
           whoami
-          ssh -T git@github.com:Hoshinowo-Yuki/moe-mizuki.git || true
+          ssh -T git@github.com-blog-repo:Hoshinowo-Yuki/Shirone.git || true
 
-      - name: Pull latest changes
-        run: |
-          git fetch origin main
-          git reset --hard origin/main
-          git submodule update --init --recursive
-
-      - name: Build and start site
+      - name: Build and Deploy, without taking down the currently running site
         id: build
         run: |
           set -Eeuo pipefail
           docker compose build
           docker compose up -d --no-build
 
-      - name: Notify success
+      - name: On success
         if: success()
         run: |
           echo "::notice title=Deployment succeeded::The site was rebuilt and started successfully."
           echo "Deployment succeeded." >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Notify failure
+      - name: On failure
         if: failure()
         run: |
           echo "::error title=Deployment failed::The site build or startup failed."
