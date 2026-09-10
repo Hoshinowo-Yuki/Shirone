@@ -40,6 +40,7 @@ export type SidebarPage =
 	| "timeline" // 时间线
 	| "albums" // 相册
 	| "about" // 关于
+	| "privacyPolicies" // 隐私政策
 	| "categories" // 分类索引
 	| "tags" // 标签索引
 	| "rss" // RSS 订阅指南
