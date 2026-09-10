@@ -123,6 +123,19 @@ function overlayEsbuildPlugin(
 				path: args.path,
 				external: true,
 			}));
+
+			// Native modules must stay external too. `sharp` ships
+			// version-locked platform bindings under `@img/*`; inlining its JS
+			// wrapper while the bindings stay external pairs them by resolution
+			// location, which under npm's hoisted layout can mix a 0.35 wrapper
+			// with 0.34 bindings and crash at import time (`sharp.format().heif`
+			// is undefined). Keeping both external lets Node resolve a matched
+			// pair from the project root, where `sharp` is a peer dependency.
+			// biome-ignore lint/suspicious/noExplicitAny: see above.
+			build.onResolve({ filter: /^(sharp$|@img\/)/ }, (args: any) => ({
+				path: args.path,
+				external: true,
+			}));
 		},
 	};
 }

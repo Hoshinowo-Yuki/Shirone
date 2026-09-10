@@ -12,6 +12,9 @@ test("url() keeps external and data urls intact", () => {
 		"http://example.com/banner.png",
 	);
 	assert.equal(url("data:image/png;base64,abc"), "data:image/png;base64,abc");
+	assert.equal(url("#section"), "#section");
+	assert.equal(url("mailto:test@example.com"), "mailto:test@example.com");
+	assert.equal(url("javascript:void(0)"), "javascript:void(0)");
 });
 
 test("url() normalizes local paths with default base", () => {

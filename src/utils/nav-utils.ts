@@ -18,8 +18,20 @@ export function resolveNavBarLinks(links: NavBarLink[]): ResolvedNavBarLink[] {
  */
 export function resolvePageKey(
 	url: Pick<URL, "pathname" | "searchParams">,
+	baseUrlOverride?: string,
 ): string {
-	const pathname = url.pathname.replace(/\/+$/, "") || "/";
+	const rawBase = baseUrlOverride ?? import.meta.env?.BASE_URL ?? "/";
+	const normalizedBase = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
+	let pathname = url.pathname.replace(/\/+$/, "") || "/";
+
+	if (
+		normalizedBase !== "/" &&
+		pathname.startsWith(rawBase.replace(/\/+$/, ""))
+	) {
+		pathname = pathname.slice(rawBase.replace(/\/+$/, "").length);
+		pathname = pathname.replace(/\/+$/, "") || "/";
+	}
+
 	if (pathname === "/") return "home";
 	if (url.searchParams.has("category")) return "categories";
 	if (url.searchParams.has("tag")) return "tags";
@@ -35,6 +47,5 @@ export function resolvePageKey(
 	if (pathname === "/albums" || pathname.startsWith("/albums/"))
 		return "albums";
 	if (pathname === "/about") return "about";
-	if (pathname === "/privacy-policies") return "privacyPolicies";
 	return "";
 }

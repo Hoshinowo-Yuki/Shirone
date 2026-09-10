@@ -4,7 +4,6 @@ import type { Translation } from "../translation.ts";
 export const zh_TW: Translation = {
 	[Key.home]: "首頁",
 	[Key.about]: "關於",
-	[Key.privacyPolicies]: "隱私政策",
 	[Key.archive]: "彙整",
 	[Key.archiveGroup]: "彙整分組",
 	[Key.archiveGroupYear]: "依年份",
@@ -269,8 +268,7 @@ export const zh_TW: Translation = {
 	[Key.backToComment]: "直達評論",
 	[Key.notFound]: "404",
 	[Key.notFoundTitle]: "這條路似乎偏離了",
-	[Key.notFoundDescription]:
-		"它可能被移動了、歸檔了，或者本來就不存在。",
+	[Key.notFoundDescription]: "它可能被移動了、歸檔了，或者本來就不存在。",
 	[Key.backToHome]: "返回首頁",
 	[Key.close]: "關閉",
 	[Key.scanToRead]: "掃碼閱讀全文",

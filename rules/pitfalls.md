@@ -336,6 +336,16 @@ pnpm.cmd astro dev --port 4321
 
 ---
 
+### 4.13 KaTeX 渲染器与页面 CSS 必须使用同一版本
+
+**现象**：`\boxed` 方框、`\neq` / `\notin` 否定符号和 `\vec` 箭头错位（issue #44）。
+
+**根因**：`rehype-katex@7` 使用 KaTeX 0.16，而页面从顶层 KaTeX 0.18 导入 CSS。新版本重命名了 `vbox`、`thinbox`、`overlay` 等内部 class，旧 HTML 无法匹配新 CSS。
+
+**解法**：顶层 `katex` 依赖与 `rehype-katex` 实际解析的版本保持一致，升级时同步检查渲染器、CSS 和字体；不要用主题 CSS 修补第三方版本错配。源码与 npm 包模式均消费这组依赖。
+
+**防回归**：`tests/plugins/markdown/katex-version.test.mjs` 比较两条解析路径的实际版本；`tests/site/math.spec.ts` 检查 issue 中公式在直接加载和 Swup 导航后的计算样式与方框尺寸。
+
 ## 5. 测试
 
 ### 5.1 主题初始化后要等过渡收敛

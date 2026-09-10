@@ -89,7 +89,7 @@
     "astro-icon": "^1.2.0",
     "hast-util-from-html": "2.0.3",
     "hastscript": "^9.0.1",
-    "katex": "^0.18.4",
+    "katex": "^0.16.47",
     "lxgw-wenkai-screen-webfont": "^1.7.0",
     "markdown-it": "^14.3.0",
     "mdast-util-to-string": "^4.0.0",

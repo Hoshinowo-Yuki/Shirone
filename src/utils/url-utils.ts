@@ -115,7 +115,11 @@ export function url(path: string, baseUrlOverride?: string): string {
 	if (
 		path.startsWith("http://") ||
 		path.startsWith("https://") ||
-		path.startsWith("data:")
+		path.startsWith("data:") ||
+		path.startsWith("#") ||
+		path.startsWith("mailto:") ||
+		path.startsWith("tel:") ||
+		path.startsWith("javascript:")
 	) {
 		return path;
 	}

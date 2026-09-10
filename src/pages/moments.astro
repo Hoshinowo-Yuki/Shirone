@@ -6,6 +6,7 @@ import { i18n } from "@i18n/translation";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
 import { resolveImageAsset } from "@utils/asset-utils";
 import { getSortedMoments } from "@utils/content-utils";
+import { url } from "@utils/url-utils";
 import { profileConfig } from "@/config";
 
 const moments = await getSortedMoments();
@@ -39,7 +40,7 @@ const author = {
 	avatarSrcset,
 	avatarWidth,
 	avatarHeight,
-	url: "/about/",
+	url: url("/about/"),
 };
 ---
 

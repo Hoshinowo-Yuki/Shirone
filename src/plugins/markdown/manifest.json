@@ -1102,7 +1102,11 @@
 				"src/content/posts/guide/index.md",
 				"src/content/posts/markdown.md"
 			],
-			"tests": ["tests/site/post-encryption.spec.ts"],
+			"tests": [
+				"tests/plugins/markdown/katex-version.test.mjs",
+				"tests/site/math.spec.ts",
+				"tests/site/post-encryption.spec.ts"
+			],
 			"notes": ["解析由 remark-math 与 rehype-katex 提供。"]
 		},
 		{

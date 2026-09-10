@@ -4,7 +4,6 @@ import type { Translation } from "../translation.ts";
 export const ja: Translation = {
 	[Key.home]: "Home",
 	[Key.about]: "About",
-	[Key.privacyPolicies]: "プライバシーポリシー",
 	[Key.archive]: "Archive",
 	[Key.archiveGroup]: "アーカイブのグループ化",
 	[Key.archiveGroupYear]: "年別",

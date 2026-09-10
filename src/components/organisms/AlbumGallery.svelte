@@ -3,6 +3,7 @@ import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import Icon from "@iconify/svelte";
 import { openFancyboxGallery } from "@utils/fancybox-handler";
+import { url } from "@utils/url-utils";
 import type { AlbumLayout, AlbumPhoto } from "@/types/album";
 
 let {
@@ -53,7 +54,8 @@ function rememberNaturalRatio(photo: AlbumPhoto, event: Event) {
 function openPhoto(event: MouseEvent, photo: AlbumPhoto) {
 	event.preventDefault();
 	event.stopPropagation();
-	void openFancyboxGallery([{ src: photo.src }]);
+	const fullSrc = photo.src ? url(photo.src) : "";
+	void openFancyboxGallery([{ src: fullSrc }]);
 }
 
 function ratio(photo: AlbumPhoto): string {
@@ -78,7 +80,7 @@ function ratio(photo: AlbumPhoto): string {
 						onclick={(event) => openPhoto(event, photo)}
 				>
 					<img
-					src={photo.thumbnail || photo.src}
+					src={url(photo.thumbnail || photo.src)}
 						alt={photo.alt}
 						width={photo.width}
 						height={photo.height}

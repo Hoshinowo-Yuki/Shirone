@@ -27,6 +27,7 @@ export type SidebarSide = "left" | "right";
  * 容器时同步属性），供 SideBar 在导航后重新过滤。
  */
 export type SidebarPage =
+	| "notFound" // 404 页面
 	| "home" // 首页（[...page].astro 及其分页）
 	| "archive" // 归档
 	| "friends" // 友链
@@ -39,7 +40,6 @@ export type SidebarPage =
 	| "timeline" // 时间线
 	| "albums" // 相册
 	| "about" // 关于
-	| "privacyPolicies" // 隱私政策
 	| "categories" // 分类索引
 	| "tags" // 标签索引
 	| "rss" // RSS 订阅指南

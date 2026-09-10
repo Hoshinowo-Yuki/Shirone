@@ -4,7 +4,6 @@ import type { Translation } from "../translation.ts";
 export const es: Translation = {
 	[Key.home]: "Inicio",
 	[Key.about]: "Sobre mí",
-	[Key.privacyPolicies]: "Política de privacidad",
 	[Key.archive]: "Archivo",
 	[Key.archiveGroup]: "Agrupar archivo por",
 	[Key.archiveGroupYear]: "Por año",

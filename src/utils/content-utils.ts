@@ -7,7 +7,7 @@ import {
 } from "@utils/content-date";
 import { siteMarkdownProcessor } from "@utils/markdown-processor";
 import { initPostIdMap } from "@utils/permalink-utils";
-import { getCategoryUrl, getPostUrl } from "@utils/url-utils";
+import { getCategoryUrl, getPostUrl, url } from "@utils/url-utils";
 
 // // Retrieve posts and sort them by publication date
 async function getRawSortedPosts(): Promise<CollectionEntry<"posts">[]> {
@@ -155,15 +155,27 @@ let momentsRendererPromise: ReturnType<
 const MOMENT_THUMBNAIL_WIDTHS = [192, 384, 640] as const;
 
 function withMomentThumbnails(image: MomentImage): MomentImage {
+	const resolvedSrc = image.src.startsWith("/") ? url(image.src) : image.src;
 	const match = image.src.match(/^\/images\/moments\/(.+)\.([^./]+)$/i);
-	if (!match) return image;
+	if (!match) {
+		return {
+			...image,
+			src: resolvedSrc,
+			thumbnailSrc: image.thumbnailSrc
+				? image.thumbnailSrc.startsWith("/")
+					? url(image.thumbnailSrc)
+					: image.thumbnailSrc
+				: resolvedSrc,
+		};
+	}
 	const [, relativePath] = match;
 	const candidates = MOMENT_THUMBNAIL_WIDTHS.map((width) => ({
 		width,
-		src: `/assets/moments/thumbnails/${relativePath}-${width}.webp`,
+		src: url(`/assets/moments/thumbnails/${relativePath}-${width}.webp`),
 	}));
 	return {
 		...image,
+		src: resolvedSrc,
 		thumbnailSrc: candidates.find(({ width }) => width === 384)?.src,
 		thumbnailSrcset: candidates
 			.map(({ src, width }) => `${src} ${width}w`)

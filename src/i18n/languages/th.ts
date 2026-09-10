@@ -4,7 +4,6 @@ import type { Translation } from "../translation.ts";
 export const th: Translation = {
 	[Key.home]: "หน้าแรก",
 	[Key.about]: "เกี่ยวกับ",
-	[Key.privacyPolicies]: "นโยบายความเป็นส่วนตัว",
 	[Key.archive]: "คลัง",
 	[Key.archiveGroup]: "จัดกลุ่มคลัง",
 	[Key.archiveGroupYear]: "ตามปี",
@@ -268,8 +267,7 @@ export const th: Translation = {
 	[Key.backToComment]: "ไปยังความคิดเห็น",
 	[Key.notFound]: "404",
 	[Key.notFoundTitle]: "หน้านี้หลงทางแล้ว",
-	[Key.notFoundDescription]:
-		"อาจถูกย้าย เก็บถาวร หรือไม่เคยมีอยู่จริงเลยก็ได้",
+	[Key.notFoundDescription]: "อาจถูกย้าย เก็บถาวร หรือไม่เคยมีอยู่จริงเลยก็ได้",
 	[Key.backToHome]: "กลับหน้าแรก",
 	[Key.close]: "ปิด",
 	[Key.scanToRead]: "สแกนเพื่ออ่านบทความ",

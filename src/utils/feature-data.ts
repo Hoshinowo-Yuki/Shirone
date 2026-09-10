@@ -12,6 +12,7 @@ import type { DeviceItem, DevicesConfig } from "../types/devicesConfig.ts";
 import type { ProjectItem, ProjectsConfig } from "../types/projectsConfig.ts";
 import type { SkillItem, SkillsConfig } from "../types/skillsConfig.ts";
 import type { TimelineConfig, TimelineItem } from "../types/timelineConfig.ts";
+import { url } from "./url-utils.ts";
 
 /**
  * 依据禁用列表过滤条目（纯函数）。
@@ -70,11 +71,19 @@ export function resolveProjectsData(
 ): ProjectItem[] {
 	const source = customItems ?? config.items ?? projectsData;
 	const enabledItems = source.filter((item) => item.enable !== false);
-	return filterByDisabledKeys(
+	const filtered = filterByDisabledKeys(
 		enabledItems,
 		config.disabledKeys,
 		(item) => item.key,
 	);
+	return filtered.map((item) => ({
+		...item,
+		cover: item.cover
+			? item.cover.startsWith("/")
+				? url(item.cover)
+				: item.cover
+			: undefined,
+	}));
 }
 
 /**
@@ -123,9 +132,17 @@ export function resolveDevicesData(
 ): DeviceItem[] {
 	const source = customItems ?? config.items ?? devicesData;
 	const enabledItems = source.filter((item) => item.enable !== false);
-	return filterByDisabledKeys(
+	const filtered = filterByDisabledKeys(
 		enabledItems,
 		config.disabledIds ?? config.disabledKeys,
 		(item) => item.id,
 	);
+	return filtered.map((item) => ({
+		...item,
+		image: item.image
+			? item.image.startsWith("/")
+				? url(item.image)
+				: item.image
+			: undefined,
+	}));
 }
