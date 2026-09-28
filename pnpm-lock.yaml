@@ -41,9 +41,6 @@ importers:
       '@fontsource-variable/jetbrains-mono':
         specifier: ^5.3.0
         version: 5.3.0
-      '@fontsource/lxgw-wenkai-tc':
-        specifier: ^5.3.0
-        version: 5.3.0
       '@fontsource/outfit':
         specifier: ^5.3.0
         version: 5.3.0
@@ -1273,9 +1270,6 @@ packages:
 
   '@fontsource-variable/jetbrains-mono@5.3.0':
     resolution: {integrity: sha512-F32xpS2NsGYoQi2ADSkKTgpJj7ozajsGgDJ8woTnqjmIB+dxDIqImjl4pXZVEExu8UFZ2ndhmX18EBS/hdz3Lw==}
-
-  '@fontsource/lxgw-wenkai-tc@5.3.0':
-    resolution: {integrity: sha512-uH/YIfs+B6onN1JfvqzXG6of1i9so9/LCXQkblPWWqBSAoU6PzUELjBMEaLeOi5thnoFR68DqCfdlfA72oxHZw==}
 
   '@fontsource/outfit@5.3.0':
     resolution: {integrity: sha512-0AVHzTTVJSxWDOxPKSfMeHhZeBFDU3cmgrcOb76ZEyhGo0+xgyG3GsLF3h9+X8w0IX7G4jzjJgFQEBiWdX6VgA==}
@@ -7904,8 +7898,6 @@ snapshots:
   '@fancyapps/ui@6.1.14': {}
 
   '@fontsource-variable/jetbrains-mono@5.3.0': {}
-
-  '@fontsource/lxgw-wenkai-tc@5.3.0': {}
 
   '@fontsource/outfit@5.3.0': {}
 
