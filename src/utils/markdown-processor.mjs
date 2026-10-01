@@ -57,14 +57,6 @@ import { remarkFeatureProbes } from "../plugins/remark-feature-probes.mjs";
 import { remarkMermaid } from "../plugins/remark-mermaid.mjs";
 import { remarkReadingTime } from "../plugins/remark-reading-time.mjs";
 
-import { KeyboardComponent } from "../plugins/markdown/common/rehype-component-keyboard.js";
-import { rehypeChat } from "../plugins/markdown/common/rehype-chat.mjs";
-import remarkTabs from "../plugins/markdown/common/remark-tabs.js";
-import remarkHighlight from "../plugins/markdown/common/remark-highlight.js";
-import remarkColoredText from "../plugins/markdown/common/remark-colored-text.js";
-import remarkSupersub from "../plugins/markdown/common/remark-supersub.js";
-import remarkFurigana from "../plugins/markdown/common/remark-furigana.js";
-
 // This processor is executed directly by Node tests, so avoid runtime imports
 // of TypeScript enums (unsupported by Node's strip-only TypeScript loader).
 const fieldI18nKeys = {
@@ -101,11 +93,6 @@ export const siteRemarkPlugins = [
 	remarkFeatureProbes,
 	remarkSectionize,
 	parseDirectiveNode,
-	remarkTabs,
-	remarkHighlight,
-	remarkColoredText,
-	remarkSupersub,
-	remarkFurigana,
 ];
 
 /**
@@ -141,8 +128,6 @@ export const siteRehypePlugins = [
 					),
 				"code-tree": CodeTreeComponent,
 				steps: StepsComponent,
-				chat: rehypeChat,
-				keyboard: KeyboardComponent,
 				github: GithubCardComponent,
 				grid: ImageGridComponent,
 				note: (x, y) => AdmonitionComponent(x, y, "note"),
