@@ -10,7 +10,6 @@ import { siteConfig } from "../config/siteConfig.ts";
 import { i18n } from "../i18n/translation.ts";
 import { remarkCodeTree } from "../plugins/markdown/code/remark-code-tree.mjs";
 import { remarkFileTree } from "../plugins/markdown/code/remark-file-tree.mjs";
-import remarkTabs from "../plugins/markdown/common/remark-tabs.js";
 import { CodeTreeComponent } from "../plugins/markdown/containers/rehype-code-tree.mjs";
 import {
 	CollapsePanelsComponent,
@@ -106,7 +105,6 @@ export const siteRemarkPlugins = [
 	remarkFeatureProbes,
 	remarkSectionize,
 	parseDirectiveNode,
-	remarkTabs,
 ];
 
 /**
