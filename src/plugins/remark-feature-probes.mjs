@@ -53,6 +53,13 @@ export function remarkFeatureProbes() {
 			) {
 				syntaxes.add("code-tree");
 			}
+			if (
+				node.type === "containerDirective" &&
+				node.name === "chat" &&
+				node.children?.length
+			) {
+				syntaxes.add("chat");
+			}
 			if (node.type === "containerDirective" && node.name === "collapse") {
 				syntaxes.add("collapse-panels");
 			}
@@ -61,6 +68,24 @@ export function remarkFeatureProbes() {
 			}
 			if (node.type === "textDirective" && node.name === "spoiler") {
 				syntaxes.add("spoiler");
+			}
+			if (
+				node.type === "textDirective" &&
+				(node.name === "sup" || node.name === "sub")
+			) {
+				syntaxes.add("supersub");
+			}
+			if (node.type === "textDirective" && node.name === "m3-ruby") {
+				syntaxes.add("furigana");
+			}
+			if (node.type === "textDirective" && node.name === "colored-text") {
+				syntaxes.add("colored-text");
+			}
+			if (
+				(node.type === "textDirective" || node.type === "leafDirective") &&
+				node.name === "keyboard"
+			) {
+				syntaxes.add("keyboard");
 			}
 			if (
 				node.type === "textDirective" &&

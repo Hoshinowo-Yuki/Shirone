@@ -1,0 +1,168 @@
+/* :::chat transcript; --start is the author's "left". The start bubble and
+   notes tint whatever surface they sit on with on-surface (like an M3 state
+   layer), because the post card itself may already be a surface-container
+   role. The end bubble uses primary-container and follows the seed colour. */
+.custom-md .m3-chat {
+	display: flex;
+	flex-direction: column;
+	gap: var(--m3e-space-3);
+	margin: var(--m3e-space-6) 0;
+	padding: 0;
+	list-style: none;
+}
+
+.custom-md .m3-chat__message {
+	display: flex;
+	flex-direction: column;
+	gap: var(--m3e-space-1);
+	max-width: min(85%, 36rem);
+	margin: 0;
+}
+
+.custom-md .m3-chat__message--start {
+	align-self: flex-start;
+	align-items: flex-start;
+}
+
+.custom-md .m3-chat__message--end {
+	align-self: flex-end;
+	align-items: flex-end;
+}
+
+.custom-md .m3-chat__meta {
+	display: flex;
+	align-items: baseline;
+	gap: var(--m3e-space-2);
+	padding-inline: var(--m3e-space-1);
+}
+
+.custom-md .m3-chat__message--end .m3-chat__meta {
+	flex-direction: row-reverse;
+}
+
+.custom-md .m3-chat__name {
+	color: var(--on-surface);
+	font: var(--m3e-type-label-large);
+}
+
+.custom-md .m3-chat__time {
+	color: var(--on-surface-variant);
+	font: var(--m3e-type-label-small);
+}
+
+.custom-md .m3-chat__clock {
+	margin-inline-start: var(--m3e-space-1);
+}
+
+.custom-md .m3-chat__bubble {
+	box-sizing: border-box;
+	max-width: 100%;
+	padding: var(--m3e-space-2) var(--m3e-space-4);
+	border-radius: var(--shape-corner-l);
+	font: var(--m3e-type-body-large);
+	overflow-wrap: anywhere;
+}
+
+.custom-md .m3-chat__message--start .m3-chat__bubble {
+	border-start-start-radius: var(--shape-corner-xs);
+	background: color-mix(in oklab, var(--on-surface) 8%, transparent);
+	color: var(--on-surface);
+}
+
+.custom-md .m3-chat__message--end .m3-chat__bubble {
+	border-start-end-radius: var(--shape-corner-xs);
+	background: var(--primary-container);
+	color: var(--on-primary-container);
+}
+
+.custom-md .m3-chat__bubble:empty {
+	display: none;
+}
+
+.custom-md .m3-chat__bubble > * {
+	margin: 0;
+}
+
+.custom-md .m3-chat__bubble > * + * {
+	margin-block-start: var(--m3e-space-2);
+}
+
+.custom-md .m3-chat__bubble :is(strong, em, code) {
+	color: inherit;
+}
+
+.custom-md .m3-chat__message--end .m3-chat__bubble a {
+	color: inherit;
+	text-decoration: underline;
+}
+
+/* list-style inherits, so restore markers reset by the transcript <ol>. */
+.custom-md .m3-chat__bubble ul {
+	padding-inline-start: var(--m3e-space-5);
+	list-style: disc;
+}
+
+.custom-md .m3-chat__bubble ol {
+	padding-inline-start: var(--m3e-space-5);
+	list-style: decimal;
+}
+
+.custom-md .m3-chat__bubble blockquote {
+	position: relative;
+	padding-inline-start: var(--m3e-space-3);
+	opacity: 0.8;
+	font: var(--m3e-type-body-medium);
+}
+
+.custom-md .m3-chat__bubble blockquote::before {
+	left: 0;
+	background: currentColor;
+}
+
+.custom-md .m3-chat__reply {
+	display: flex;
+	align-items: center;
+	gap: var(--m3e-space-1);
+	opacity: 0.8;
+	font: var(--m3e-type-label-medium);
+}
+
+.custom-md .m3-chat__reply-icon {
+	flex: none;
+	width: 1em;
+	height: 1em;
+	fill: currentColor;
+}
+
+.custom-md .m3-chat__note {
+	align-self: center;
+	max-width: 85%;
+	margin: 0;
+	padding: var(--m3e-space-1) var(--m3e-space-3);
+	border-radius: var(--shape-corner-full);
+	background: color-mix(in oklab, var(--on-surface) 5%, transparent);
+	color: var(--on-surface-variant);
+	font: var(--m3e-type-label-medium);
+	text-align: center;
+}
+
+.custom-md .m3-chat__note > * {
+	margin: 0;
+}
+
+.custom-md .m3-chat__divider {
+	display: flex;
+	align-items: center;
+	gap: var(--m3e-space-3);
+	margin: var(--m3e-space-2) 0;
+	color: var(--on-surface-variant);
+	font: var(--m3e-type-label-medium);
+}
+
+.custom-md .m3-chat__divider::before,
+.custom-md .m3-chat__divider::after {
+	flex: 1;
+	height: 1px;
+	background: var(--outline-variant);
+	content: "";
+}

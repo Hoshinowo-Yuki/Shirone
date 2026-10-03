@@ -150,6 +150,76 @@ Bun 对应的完整 Markdown 正文。
 
 SSR 输出不会预先隐藏任何面板，并重复输出每个面板标题，因此脚本不可用时仍能连续阅读全文。客户端模块只在页面实际包含 `.m3-option-group` 时动态加载，增强后才隐藏非活动面板并启用点击、方向键、Home/End、ARIA 状态、同 id 同步与记忆。初始化覆盖直接加载、Swup 内容替换和加密文章解锁；不使用 hydration、第三方依赖或网络请求。组件根节点使用 `not-prose`，选项栏保持单行并在自身范围内横向滑动；长标题截断但标签仍可点击，键盘切换只滚动该选项栏。窄屏边界和打印展开由 `markdown/option-groups.css` 完整拥有。独立演示页位于 `src/content/posts/option-groups.md`。
 
+### 3.6 上标与下标
+
+`:sup[内容]` 与 `:sub[内容]` 输出原生 `<sup>` / `<sub>`；上标另有 `^内容^` 简写：
+
+```markdown
+E = mc^2^，H:sub[2]O，:sup[**加粗上标**]
+```
+
+下标没有简写：GFM 已将 `~内容~` 解析为删除线，站点不改动该行为。`remark-supersub.mjs` 在 `remarkDirective` 之后运行，此时代码、数学公式与链接已是独立节点，因此只改写正文文本。简写内容不得包含空白或方括号（`2^10 和 3^4` 保留原文）；同一段文本中出现 `\^` 转义时整段保留原文。作者属性会被丢弃，空标签保留原文。该语法不依赖样式、客户端模块或网络请求。
+
+### 3.7 彩色文字
+
+`:颜色名[内容]` 为正文短语着色：
+
+```markdown
+:red[注意]、:teal[提示]、:primary[主题主色]、:hex-ff5733[自定义颜色]
+```
+
+颜色名 `red`、`orange`、`yellow`、`green`、`teal`、`blue`、`purple`、`pink` 映射到 `variables.styl` 中的 `--content-color-*`：与提示块一样是固定色相语义色，明暗两档均对 surface 保持 ≥ 4.5:1。`gray`（`grey`）映射到 `--on-surface-variant`，`primary`、`secondary`、`tertiary`、`error` 跟随种子色。`remark-colored-text.mjs` 把这些写法归一化为 `colored-text` directive，再由 `rehype-component-colored-text.mjs` 输出带 `m3-colored-text--<name>` class 的 `<span>`，样式包为 `markdown/colored-text.css`。
+
+`hex-` 是唯一使用内联样式的形式（只接受 3 或 6 位十六进制），作者需自行保证明暗两种模式下的可读性。格式错误的 `hex-` 与无标签形式（如 `status:red`）保留原文，作者属性会被丢弃。
+
+### 3.8 键帽
+
+```markdown
+按 :keyboard{key="Ctrl"} + :keyboard{key="C" theme} 复制，:keyboard[**Shift**] 也可以。
+
+::keyboard{key="Enter"}
+```
+
+行内只能使用单冒号 `:keyboard`；双冒号 `::keyboard` 是叶子 directive，必须独占一行。`key` 优先于标签，`theme` 输出 `m3-kbd--primary`（样式包 `markdown/keyboard.css`），其他属性会被丢弃；既无 `key` 也无标签时保留原文。键帽基础外观来自 Typography 的 `kbd` 样式。
+
+### 3.9 振假名
+
+`[正文]{读音}` 输出原生 `<ruby>`：
+
+```markdown
+[漢字]{かんじ}、[聞き手]{ききて}、[日本語]{に.ほん.ご}、[今日]{=きょう}、[すごい]{*}
+```
+
+| 读音写法 | 行为 |
+| --- | --- |
+| `{かんじ}` | 正文中的假名作为锚点，把读音拆到各段汉字上（`[聞き手]{ききて}` → 聞(き)き手(て)） |
+| `{に.ほん.ご}` | 分隔符（`.`、`・`、`|`、`/` 及全角形式）逐字分配；段数与汉字数不符时整段标注 |
+| `{=きょう}` | 原样标注在整段正文上（熟字训等） |
+| `{か+わいい}` | 去掉 `+` 后整段标注 |
+| `{*}`、`{*❤}` | 每个字符上方标注着重号（默认 `・`） |
+
+`remark-furigana.mjs` 与 Marker 一样在 `remarkDirective` 之前改写源文本：读音成为 `m3-ruby` directive 的属性，因此 `*` 不会被解析为强调，正文标签可以包含行内 Markdown（此时整段标注）。`rehype-component-furigana.mjs` 在 `rehypeSlug` 之后渲染，标题锚点只取正文；目录文字沿用 `【读音】` 形式。代码、数学公式（含 `\sqrt[3]{x}`）、转义方括号，以及紧跟 ASCII 字母数字或 `]`、`)`、`!`、`:` 的方括号保留原文；读音以 `.`、`#` 开头或含引号、冒号、分号、非首位 `=` 时视为属性或代码。无法对齐时整段读音标注在整段正文上，不丢弃字符。该语法不依赖样式、客户端模块或网络请求；与 `==marker==` 嵌套不受支持。
+
+### 3.10 聊天记录
+
+`:::chat` 容器把对话渲染为聊天气泡：
+
+```markdown
+:::chat
+((Alice 加入了对话))
+
+[Alice|10:00]
+早上好，**今天**开会吗？
+
+[Bob|10:01|right|Alice]
+开，[议程](https://example.com)已经发了。
+:::
+```
+
+以段落开头的 `[user|time]` 消息头开始一条消息，直到下一个消息头之前的段落、引用、列表与代码都属于该消息，行内 Markdown 完整保留。消息头可选第三段 `left`/`right`（默认 `left`，空值同 `left`）与第四段回复对象。单独成段的 `[[2026-10-03]]` 或 `[[昨天]]` 渲染为日期分隔线并结束当前消息；分隔线与消息头的时间段为合法的 `HH:mm`、`YYYY-MM-DD` 或 `YYYY-MM-DD HH:mm` 时输出 `<time datetime>`，文本始终按作者原样显示（与站点统一的 `YYYY-MM-DD` 一致），非法日期如 `2026-02-30` 只输出普通文本。单独成段的 `((Alice 加入了对话))` 在任意位置渲染为居中的系统提示（适合加入、离开等事件），保留行内 Markdown 并结束当前消息；第一个消息头之前或分隔线之后的普通内容同样渲染为系统提示。日期与提示均为可选。
+
+`rehype-component-chat.mjs` 输出 `<ol class="m3-chat not-prose">`，作者的 `left`/`right` 映射为逻辑方向的 `--start`/`--end`。左侧气泡与系统提示以 `on-surface` 叠色覆盖所在表面（类似 M3 状态层，因为文章卡片本身可能已是 surface-container 角色），右侧使用 `primary-container` 并跟随种子色，明暗模式均由 token 决定；回复图标为内联 SVG，不需要 hydration。样式包为 `markdown/chat.css`。空容器不输出 DOM；空容器、无消息头和未知 position 会写入 vfile 警告（Astro 目前不打印 vfile 消息）。
+
 ## 4. 缓存与刷新
 
 修改 remark/rehype 插件后，Astro dev 可能继续提供旧的 Markdown 编译结果。典型信号是：新 CSS 已出现，但插件新增的 class 或 DOM 结构不存在。
@@ -193,6 +263,11 @@ Admonitions、Collapse Panels、Option Groups、Marker、File Tree、Code Tree�
 - `tests/plugins/markdown/containers/collapse-panels.test.mjs`
 - `tests/plugins/markdown/containers/option-groups.test.mjs`
 - `tests/plugins/markdown/inline/markers.test.mjs`
+- `tests/plugins/markdown/inline/supersub.test.mjs`
+- `tests/plugins/markdown/inline/colored-text.test.mjs`
+- `tests/plugins/markdown/inline/keyboard.test.mjs`
+- `tests/plugins/markdown/inline/furigana.test.mjs`
+- `tests/plugins/markdown/containers/chat.test.mjs`
 - `tests/plugins/markdown/containers/file-tree.test.mjs`
 - `tests/plugins/markdown/containers/code-tree.test.mjs`
 - `tests/plugins/markdown/containers/steps.test.mjs`

@@ -10,6 +10,7 @@ import { siteConfig } from "../config/siteConfig.ts";
 import { i18n } from "../i18n/translation.ts";
 import { remarkCodeTree } from "../plugins/markdown/code/remark-code-tree.mjs";
 import { remarkFileTree } from "../plugins/markdown/code/remark-file-tree.mjs";
+import remarkTabs from "../plugins/markdown/common/remark-tabs.js";
 import { CodeTreeComponent } from "../plugins/markdown/containers/rehype-code-tree.mjs";
 import {
 	CollapsePanelsComponent,
@@ -32,19 +33,27 @@ import { remarkArtPlayer } from "../plugins/markdown/remark-artplayer.mjs";
 import { remarkAudioReader } from "../plugins/markdown/remark-audio-reader.mjs";
 import { remarkBilibili } from "../plugins/markdown/remark-bilibili.mjs";
 import { remarkCollapsePanels } from "../plugins/markdown/remark-collapse-panels.mjs";
+import { remarkColoredText } from "../plugins/markdown/remark-colored-text.mjs";
 import { remarkContentAnnotations } from "../plugins/markdown/remark-content-annotations.mjs";
 import { remarkFields } from "../plugins/markdown/remark-fields.mjs";
+import { remarkFurigana } from "../plugins/markdown/remark-furigana.mjs";
 import { remarkIncludes } from "../plugins/markdown/remark-includes.mjs";
+import { remarkKeyboard } from "../plugins/markdown/remark-keyboard.mjs";
 import { remarkMarker } from "../plugins/markdown/remark-marker.mjs";
 import { remarkOptionGroups } from "../plugins/markdown/remark-option-groups.mjs";
+import { remarkSupersub } from "../plugins/markdown/remark-supersub.mjs";
 import { remarkYouTube } from "../plugins/markdown/remark-youtube.mjs";
 import { AcFunComponent } from "../plugins/rehype-component-acfun.mjs";
 import { AdmonitionComponent } from "../plugins/rehype-component-admonition.mjs";
 import { ArtPlayerComponent } from "../plugins/rehype-component-artplayer.mjs";
 import { AudioReaderComponent } from "../plugins/rehype-component-audio-reader.mjs";
 import { BilibiliComponent } from "../plugins/rehype-component-bilibili.mjs";
+import { ChatComponent } from "../plugins/rehype-component-chat.mjs";
+import { ColoredTextComponent } from "../plugins/rehype-component-colored-text.mjs";
+import { FuriganaComponent } from "../plugins/rehype-component-furigana.mjs";
 import { GithubCardComponent } from "../plugins/rehype-component-github-card.mjs";
 import { ImageGridComponent } from "../plugins/rehype-component-image-grid.mjs";
+import { KeyboardComponent } from "../plugins/rehype-component-keyboard.mjs";
 import { MarkerComponent } from "../plugins/rehype-component-marker.mjs";
 import { SpoilerComponent } from "../plugins/rehype-component-spoiler.mjs";
 import { YouTubeComponent } from "../plugins/rehype-component-youtube.mjs";
@@ -56,14 +65,6 @@ import { remarkExcerpt } from "../plugins/remark-excerpt.js";
 import { remarkFeatureProbes } from "../plugins/remark-feature-probes.mjs";
 import { remarkMermaid } from "../plugins/remark-mermaid.mjs";
 import { remarkReadingTime } from "../plugins/remark-reading-time.mjs";
-
-import { KeyboardComponent } from "../plugins/markdown/common/rehype-component-keyboard.js";
-import { rehypeChat } from "../plugins/markdown/common/rehype-chat.mjs";
-import remarkTabs from "../plugins/markdown/common/remark-tabs.js";
-import remarkHighlight from "../plugins/markdown/common/remark-highlight.js";
-import remarkColoredText from "../plugins/markdown/common/remark-colored-text.js";
-import remarkSupersub from "../plugins/markdown/common/remark-supersub.js";
-import remarkFurigana from "../plugins/markdown/common/remark-furigana.js";
 
 // This processor is executed directly by Node tests, so avoid runtime imports
 // of TypeScript enums (unsupported by Node's strip-only TypeScript loader).
@@ -85,6 +86,7 @@ export const siteRemarkPlugins = [
 	remarkCollapsePanels,
 	remarkOptionGroups,
 	remarkMarker,
+	remarkFurigana,
 	remarkMath,
 	remarkFileTree,
 	remarkCodeTree,
@@ -98,14 +100,13 @@ export const siteRemarkPlugins = [
 	remarkArtPlayer,
 	remarkBilibili,
 	remarkYouTube,
+	remarkSupersub,
+	remarkColoredText,
+	remarkKeyboard,
 	remarkFeatureProbes,
 	remarkSectionize,
 	parseDirectiveNode,
 	remarkTabs,
-	remarkHighlight,
-	remarkColoredText,
-	remarkSupersub,
-	remarkFurigana,
 ];
 
 /**
@@ -141,8 +142,9 @@ export const siteRehypePlugins = [
 					),
 				"code-tree": CodeTreeComponent,
 				steps: StepsComponent,
-				chat: rehypeChat,
+				chat: ChatComponent,
 				keyboard: KeyboardComponent,
+				"colored-text": ColoredTextComponent,
 				github: GithubCardComponent,
 				grid: ImageGridComponent,
 				note: (x, y) => AdmonitionComponent(x, y, "note"),
@@ -153,6 +155,7 @@ export const siteRehypePlugins = [
 				warning: (x, y) => AdmonitionComponent(x, y, "warning"),
 				"admonition-details": (x, y) => AdmonitionComponent(x, y, "details"),
 				"m3-mark": MarkerComponent,
+				"m3-ruby": FuriganaComponent,
 				spoiler: SpoilerComponent,
 			},
 		},

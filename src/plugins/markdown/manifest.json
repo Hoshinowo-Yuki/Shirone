@@ -33,9 +33,19 @@
 			"styles": ["src/styles/markdown/bilibili.css"]
 		},
 		{
+			"id": "chat",
+			"syntaxes": ["chat"],
+			"styles": ["src/styles/markdown/chat.css"]
+		},
+		{
 			"id": "collapse-panels",
 			"syntaxes": ["collapse-panels"],
 			"styles": ["src/styles/markdown/collapse-panels.css"]
+		},
+		{
+			"id": "colored-text",
+			"syntaxes": ["colored-text"],
+			"styles": ["src/styles/markdown/colored-text.css"]
 		},
 		{
 			"id": "content-annotations",
@@ -66,6 +76,11 @@
 			"id": "image-presentations",
 			"syntaxes": ["image-presentation"],
 			"styles": ["src/styles/markdown/image-presentations.css"]
+		},
+		{
+			"id": "keyboard",
+			"syntaxes": ["keyboard"],
+			"styles": ["src/styles/markdown/keyboard.css"]
 		},
 		{
 			"id": "marker",
@@ -468,6 +483,51 @@
 			]
 		},
 		{
+			"id": "chat",
+			"name": "Chat Transcript",
+			"status": "stable",
+			"category": "container",
+			"source": "shirone",
+			"summary": "使用 :::chat 容器渲染聊天记录气泡，消息正文保留完整 Markdown。",
+			"forms": [
+				{
+					"kind": "container-directive",
+					"pattern": ":::chat ... [[date]] ... ((note)) ... [user|time] ... [user|time|right|replyTo] ... :::",
+					"example": ":::chat\n[Alice|10:00]\n早上好，**今天**开会吗？\n\n[Bob|10:01|right|Alice]\n开，[议程](https://example.com)已经发了。\n:::"
+				}
+			],
+			"attributes": [
+				{
+					"name": "position",
+					"required": false,
+					"values": "left | right（消息头第三段）",
+					"default": "left"
+				},
+				{
+					"name": "replyTo",
+					"required": false,
+					"values": "string（消息头第四段）",
+					"default": null
+				}
+			],
+			"implementation": ["src/plugins/rehype-component-chat.mjs"],
+			"registeredIn": "src/utils/markdown-processor.mjs",
+			"styles": ["src/styles/markdown/chat.css"],
+			"runtime": {
+				"mode": "none",
+				"modules": [],
+				"network": []
+			},
+			"docs": ["docs/markdown-extensions.md"],
+			"tests": ["tests/plugins/markdown/containers/chat.test.mjs"],
+			"notes": [
+				"以段落开头的 [user|time…] 消息头开始一条消息，直到下一个消息头之前的内容都属于该消息，行内与块级 Markdown 均保留。",
+				"单独成段的 [[...]] 渲染为日期分隔线并结束当前消息；分隔线与消息头时间为合法日期/时间时输出 <time datetime>，否则原样显示文本。",
+				"单独成段的 ((...)) 在任意位置渲染为居中的系统提示（如加入、离开对话）并结束当前消息；第一个消息头之前或分隔线之后的普通内容同样渲染为系统提示；空容器不输出 DOM，并与未知 position 一样产生构建警告。",
+				"输出有序列表语义；回复图标为内联 SVG，不需要 hydration、客户端模块或网络请求。"
+			]
+		},
+		{
 			"id": "code-tree",
 			"name": "Code Tree",
 			"status": "stable",
@@ -606,6 +666,53 @@
 				"容器只接受一个顶层无序列表，且每项必须包含独立标题段落和正文；非法或混合输入保留为普通 Markdown。",
 				"accordion 使用文档内唯一的原生 details name 分组；普通模式允许多个面板同时展开。",
 				"输出为纯 SSR 原生 disclosure，不增加 hydration、客户端模块、全局监听或网络请求。"
+			]
+		},
+		{
+			"id": "colored-text",
+			"name": "Colored Text",
+			"status": "stable",
+			"category": "text-directive",
+			"source": "shirone",
+			"summary": "使用颜色名 text directive 为正文短语着色；颜色名映射到随明暗切换的主题 token。",
+			"forms": [
+				{
+					"kind": "text-directive",
+					"pattern": ":<color>[content]",
+					"example": ":red[注意] 与 :primary[主题色]"
+				},
+				{
+					"kind": "text-directive",
+					"pattern": ":hex-<rgb|rrggbb>[content]",
+					"example": ":hex-ff5733[自定义颜色]"
+				}
+			],
+			"attributes": [
+				{
+					"name": "<color>",
+					"required": true,
+					"values": "red | orange | yellow | green | teal | blue | purple | pink | gray | grey | primary | secondary | tertiary | error",
+					"default": null
+				}
+			],
+			"implementation": [
+				"src/plugins/markdown/remark-colored-text.mjs",
+				"src/plugins/markdown/core/colored-text.mjs",
+				"src/plugins/rehype-component-colored-text.mjs"
+			],
+			"registeredIn": "src/utils/markdown-processor.mjs",
+			"styles": ["src/styles/markdown/colored-text.css"],
+			"runtime": {
+				"mode": "none",
+				"modules": [],
+				"network": []
+			},
+			"docs": ["docs/markdown-extensions.md"],
+			"tests": ["tests/plugins/markdown/inline/colored-text.test.mjs"],
+			"notes": [
+				"固定色相使用 --content-color-* 明暗两档 token（对 surface ≥ 4.5:1）；gray 与 M3 角色名使用主题 token。",
+				"hex- 自定义颜色是唯一使用内联样式的形式，只接受 3 或 6 位十六进制，不随明暗切换。",
+				"作者属性会被丢弃；未知颜色名不归本语法处理，无标签形式（如 status:red）保留原文。"
 			]
 		},
 		{
@@ -825,6 +932,52 @@
 			]
 		},
 		{
+			"id": "furigana",
+			"name": "Furigana",
+			"status": "stable",
+			"category": "inline-extension",
+			"source": "shirone",
+			"summary": "使用 [正文]{读音} 为汉字标注原生 ruby 注音，并按送假名自动对齐。",
+			"forms": [
+				{
+					"kind": "inline",
+					"pattern": "[base]{reading}",
+					"example": "[漢字]{かんじ}、[聞き手]{ききて}"
+				},
+				{
+					"kind": "inline",
+					"pattern": "[base]{a.b.c}",
+					"example": "[日本語]{に.ほん.ご}"
+				},
+				{
+					"kind": "inline",
+					"pattern": "[base]{=reading} | [base]{a+b} | [base]{*mark}",
+					"example": "[今日]{=きょう}、[すごい]{*}"
+				}
+			],
+			"attributes": [],
+			"implementation": [
+				"src/plugins/markdown/remark-furigana.mjs",
+				"src/plugins/markdown/core/furigana.mjs",
+				"src/plugins/rehype-component-furigana.mjs"
+			],
+			"registeredIn": "src/utils/markdown-processor.mjs",
+			"styles": [],
+			"runtime": {
+				"mode": "none",
+				"modules": [],
+				"network": []
+			},
+			"docs": ["docs/markdown-extensions.md"],
+			"tests": ["tests/plugins/markdown/inline/furigana.test.mjs"],
+			"notes": [
+				"在 remarkDirective 之前改写为 m3-ruby text directive；代码、数学公式、转义方括号以及紧跟 ASCII 字母数字或 ] ) ! : 的方括号保留原文。",
+				"读音以 . # 开头、含引号、冒号、分号或非首位 = 时视为属性或代码，不做改写。",
+				"无法按送假名或分隔符对齐时，整段读音标注在整段正文上，不丢弃字符。",
+				"标题锚点只取正文，不含读音；与 ==marker== 嵌套不受支持。"
+			]
+		},
+		{
 			"id": "github-card",
 			"name": "GitHub Repository Card",
 			"status": "stable",
@@ -1017,6 +1170,57 @@
 				"只处理独立一行且位于 fenced code 之外的注释；缺失、越界、未闭合或递归包含保留原注释。",
 				"文件读取限制在仓库根目录内，展开结果继续经过同一 Markdown 处理链。",
 				"这是构建期纯文本展开，不增加 CSS、客户端脚本、hydration 或网络请求。"
+			]
+		},
+		{
+			"id": "keyboard",
+			"name": "Keyboard Key",
+			"status": "stable",
+			"category": "text-directive",
+			"source": "shirone",
+			"summary": "使用 keyboard directive 输出原生 kbd 键帽，可选主题主色。",
+			"forms": [
+				{
+					"kind": "text-directive",
+					"pattern": ":keyboard[label] 或 :keyboard{key=\"...\"}",
+					"example": "按 :keyboard{key=\"Ctrl\"} + :keyboard{key=\"C\" theme} 复制"
+				},
+				{
+					"kind": "leaf-directive",
+					"pattern": "::keyboard{key=\"...\"}",
+					"example": "::keyboard{key=\"Enter\"}"
+				}
+			],
+			"attributes": [
+				{
+					"name": "key",
+					"required": false,
+					"values": "string；优先于标签",
+					"default": null
+				},
+				{
+					"name": "theme",
+					"required": false,
+					"values": "flag",
+					"default": false
+				}
+			],
+			"implementation": [
+				"src/plugins/markdown/remark-keyboard.mjs",
+				"src/plugins/rehype-component-keyboard.mjs"
+			],
+			"registeredIn": "src/utils/markdown-processor.mjs",
+			"styles": ["src/styles/markdown/keyboard.css"],
+			"runtime": {
+				"mode": "none",
+				"modules": [],
+				"network": []
+			},
+			"docs": ["docs/markdown-extensions.md"],
+			"tests": ["tests/plugins/markdown/inline/keyboard.test.mjs"],
+			"notes": [
+				"行内只能使用单冒号 :keyboard；双冒号 ::keyboard 必须独占一行。",
+				"只保留 key 与 theme 属性；既无 key 也无标签时保留原文。"
 			]
 		},
 		{
@@ -1278,6 +1482,47 @@
 			],
 			"notes": [
 				"容器只接受一个有序列表；视觉序号附带 aria-hidden，原始 ol/li 语义保留，纯 SSR 输出且零客户端 JavaScript 负担。"
+			]
+		},
+		{
+			"id": "supersub",
+			"name": "Superscript & Subscript",
+			"status": "stable",
+			"category": "text-directive",
+			"source": "shirone",
+			"summary": "使用 text directive 输出原生上标与下标，并为上标提供 ^内容^ 简写。",
+			"forms": [
+				{
+					"kind": "text-directive",
+					"pattern": ":sup[content]",
+					"example": "E = mc:sup[2]"
+				},
+				{
+					"kind": "text-directive",
+					"pattern": ":sub[content]",
+					"example": "H:sub[2]O"
+				},
+				{
+					"kind": "inline",
+					"pattern": "^content^",
+					"example": "x^2^ + y^2^"
+				}
+			],
+			"attributes": [],
+			"implementation": ["src/plugins/markdown/remark-supersub.mjs"],
+			"registeredIn": "src/utils/markdown-processor.mjs",
+			"styles": [],
+			"runtime": {
+				"mode": "none",
+				"modules": [],
+				"network": []
+			},
+			"docs": ["docs/markdown-extensions.md"],
+			"tests": ["tests/plugins/markdown/inline/supersub.test.mjs"],
+			"notes": [
+				"下标没有简写：GFM 将 ~内容~ 解析为删除线，因此只提供 :sub[内容]。",
+				"^内容^ 简写不得包含空白或方括号；代码、数学公式和含 \\^ 转义的文本保留原文。",
+				"作者属性会被丢弃，空标签保留原文；输出原生 sup/sub，不增加样式、客户端模块或网络请求。"
 			]
 		},
 		{

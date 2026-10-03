@@ -22,19 +22,20 @@
 | 输入保护 | `remarkEscapeNumericColons` | 最早执行 | 防止比例文本被 directive 解析器误判 |
 | 引用归一化 | `remarkContentAnnotations`、`remarkAbbreviations` | `remarkDirective` 之前 | 解析引用定义并生成后续可识别的语法节点 |
 | 容器归一化 | `remarkAdmonitions`、`remarkCollapsePanels`、`remarkOptionGroups` | `remarkDirective` 之前 | 将作者友好的容器写法改为标准 directive 形态 |
-| 行内归一化 | `remarkMarker` | `remarkDirective` 之前 | 将标记语法改为 text directive |
+| 行内归一化 | `remarkMarker`、`remarkFurigana` | `remarkDirective` 之前 | 将标记语法、`[正文]{读音}` 改为 text directive |
 | 基础节点 | `remarkMath` | 探针之前 | 生成数学节点，供能力探针记录 |
 | 树与代码 | `remarkFileTree`、`remarkCodeTree` | `remarkMermaid` 之前；探针之前 | 生成文件树、代码树节点并保留嵌套归属 |
 | Mermaid | `remarkMermaid` | 探针之前 | 归一化 Mermaid 节点或代码块 |
 | 统计与摘要 | `remarkReadingTime`、`remarkExcerpt` | 不得消费未解析的作者 directive | 生成文章统计和摘要元数据 |
 | Directive 解析 | `remarkDirective` | 所有 directive 归一化插件之后 | 将 `::`、`:::`、`{.class}` 等输入解析为 directive AST |
+| 行内归一化（directive 后） | `remarkSupersub`、`remarkColoredText`、`remarkKeyboard` | `remarkDirective` 之后；`remarkFeatureProbes` 之前 | 校验并归一化 `:sup`/`:sub`/`^内容^`、颜色名 directive 与 `keyboard`；非法输入还原为原文，作者属性只保留白名单 |
 | 能力探针 | `remarkFeatureProbes` | `remarkDirective` 之后；`remarkSectionize`、`parseDirectiveNode` 之前 | 根据规范化 AST 写入 `remarkPluginFrontmatter.markdownSyntaxes` |
 | 章节结构 | `remarkSectionize` | 能力探针之后 | 生成文章章节结构，不得改变能力快照 |
 | HAST 桥接准备 | `parseDirectiveNode` | Remark 阶段最后 | 为 Rehype 组件渲染写入 `data.hName` 和 `data.hProperties` |
 
 ### 2.1 关键依赖
 
-- `remarkAdmonitions`、`remarkCollapsePanels`、`remarkOptionGroups` 和 `remarkMarker` 产生的文本必须先经过 `remarkDirective`，否则它们会继续作为普通文本。
+- `remarkAdmonitions`、`remarkCollapsePanels`、`remarkOptionGroups`、`remarkMarker` 和 `remarkFurigana` 产生的文本必须先经过 `remarkDirective`，否则它们会继续作为普通文本。
 - `remarkFeatureProbes` 不得提前到 `remarkDirective` 之前。`::github{...}` 等叶子指令在解析前仍是文本，提前探测会导致页面 HTML 有组件而 `remarkPluginFrontmatter.markdownSyntaxes` 为空。
 - `remarkCodeTree` 内部的 fenced code 不得被重复记为 `expressive-code`；探针必须根据父级容器排除代码树子节点。
 - `parseDirectiveNode` 只能在所有会修改 directive 名称、属性或子节点的插件之后执行。它是 Remark 到 Rehype 的桥接步骤，不是作者语法探针。

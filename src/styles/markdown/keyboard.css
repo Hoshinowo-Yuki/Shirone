@@ -1,0 +1,4 @@
+/* :keyboard{theme}. The base key cap comes from Typography's kbd styles. */
+.custom-md .m3-kbd--primary {
+	color: var(--primary);
+}

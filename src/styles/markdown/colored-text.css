@@ -1,0 +1,59 @@
+/* :red[...] etc. Fixed hues come from --content-color-* (light/dark pairs in
+   variables.styl); role names follow the seed colour. :hex-*[] uses an inline
+   style by design and does not adapt to dark mode. */
+.custom-md .m3-colored-text--red {
+	color: var(--content-color-red);
+}
+
+.custom-md .m3-colored-text--orange {
+	color: var(--content-color-orange);
+}
+
+.custom-md .m3-colored-text--yellow {
+	color: var(--content-color-yellow);
+}
+
+.custom-md .m3-colored-text--green {
+	color: var(--content-color-green);
+}
+
+.custom-md .m3-colored-text--teal {
+	color: var(--content-color-teal);
+}
+
+.custom-md .m3-colored-text--blue {
+	color: var(--content-color-blue);
+}
+
+.custom-md .m3-colored-text--purple {
+	color: var(--content-color-purple);
+}
+
+.custom-md .m3-colored-text--pink {
+	color: var(--content-color-pink);
+}
+
+.custom-md .m3-colored-text--gray {
+	color: var(--on-surface-variant);
+}
+
+.custom-md .m3-colored-text--primary {
+	color: var(--primary);
+}
+
+.custom-md .m3-colored-text--secondary {
+	color: var(--secondary);
+}
+
+.custom-md .m3-colored-text--tertiary {
+	color: var(--tertiary);
+}
+
+.custom-md .m3-colored-text--error {
+	color: var(--error);
+}
+
+/* Typography colours strong/b/code/links on their own; inherit the label colour. */
+.custom-md .m3-colored-text :is(strong, b, em, i, a, code) {
+	color: inherit;
+}

@@ -90,6 +90,16 @@ define({
   --admonitions-color-warning: oklch(0.48 0.14 60) oklch(0.75 0.14 60)
   --admonitions-color-caution: oklch(0.45 0.2 25) oklch(0.65 0.2 25)
 
+  /* 正文彩色文字（:red[] 等）同为固定色相语义色；明暗两档均对 surface 保持 ≥ 4.5:1 且位于 sRGB 色域内 */
+  --content-color-red: oklch(0.50 0.18 25) oklch(0.74 0.14 25)
+  --content-color-orange: oklch(0.52 0.12 55) oklch(0.78 0.13 55)
+  --content-color-yellow: oklch(0.53 0.10 90) oklch(0.86 0.14 95)
+  --content-color-green: oklch(0.50 0.13 145) oklch(0.78 0.15 145)
+  --content-color-teal: oklch(0.50 0.085 185) oklch(0.78 0.11 185)
+  --content-color-blue: oklch(0.50 0.15 255) oklch(0.75 0.12 255)
+  --content-color-purple: oklch(0.50 0.17 305) oklch(0.75 0.13 305)
+  --content-color-pink: oklch(0.52 0.17 350) oklch(0.78 0.12 350)
+
   --toc-width: calc((100vw - var(--page-width)) / 2 - 1rem)
 
   /* 侧栏列宽（responsive-utils 布局类的唯一来源；改这里即全站生效） */
